@@ -6,21 +6,20 @@ namespace DataGrids.Shared.ViewModel;
 
 public sealed class SlideTaskViewModel : ReactiveObject
 {
+    private readonly SlideTask _slideTask;
+
     public string Title { get; }
-    public int Slot { get; }
-    public Magazine Magazine { get; }
-    public Profile Profile { get; }
-    public string Directory { get; }
+    public int Slot => _slideTask.Slot.Position;
+    public Magazine Magazine => _slideTask.Slot.ParentMagazine;
+    public Profile Profile => _slideTask.Profile;
+    public string Directory => _slideTask.Directory;
     [Reactive]
     public SlideState State { get; set; }
 
     public SlideTaskViewModel(SlideTask slideTask)
     {
-        Title = $"{slideTask.MagazineSlot.Position + 1}: {slideTask.Title}";
-        Slot = slideTask.MagazineSlot.Position;
-        Magazine = slideTask.MagazineSlot.ParentMagazine;
-        Profile = slideTask.Profile;
-        Directory = slideTask.Directory;
+        _slideTask = slideTask;
+        Title = $"{slideTask.Slot.Position + 1}: {slideTask.Title}";
         State = slideTask.State;
     }
 }
