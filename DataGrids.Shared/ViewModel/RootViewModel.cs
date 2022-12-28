@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using DataGrids.Shared.Infrastructure;
 using DataGrids.Shared.Model;
 using DynamicData;
 using DynamicData.Binding;
@@ -18,8 +19,10 @@ public sealed class RootViewModel : ReactiveObject, IDisposable
 
     public ReadOnlyObservableCollection<SlideTaskViewModel> SlideTasks => _slideTasks;
 
-    public RootViewModel()
+    public RootViewModel(ISlideTasksService slideTasksService)
     {
+        if (slideTasksService is null) throw new ArgumentNullException(nameof(slideTasksService));
+
         _internalSubscriptions = new CompositeDisposable();
         _slideTasksSourceList = new SourceList<SlideTask>().DisposeWith(_internalSubscriptions);
 
@@ -32,11 +35,8 @@ public sealed class RootViewModel : ReactiveObject, IDisposable
             .DisposeMany()
             .Subscribe()
             .DisposeWith(_internalSubscriptions);
-    }
 
-    public void Append(IEnumerable<SlideTask> slideTasks)
-    {
-        _slideTasksSourceList.AddRange(slideTasks);
+        Append(slideTasksService.GetTasks());
     }
 
     public void Dispose()
@@ -49,5 +49,10 @@ public sealed class RootViewModel : ReactiveObject, IDisposable
         _internalSubscriptions.Dispose();
 
         _disposed = true;
+    }
+
+    private void Append(IEnumerable<SlideTask> slideTasks)
+    {
+        _slideTasksSourceList.AddRange(slideTasks);
     }
 }
