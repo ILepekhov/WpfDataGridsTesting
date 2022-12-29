@@ -5,11 +5,70 @@
                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                            xmlns:viewmodels="clr-namespace:DataGrids.Shared.ViewModel;assembly=DataGrids.Shared"
+                           xmlns:models="clr-namespace:DataGrids.Shared.Model;assembly=DataGrids.Shared"
                            xmlns:reactiveui="http://reactiveui.net"
+                           xmlns:converters="clr-namespace:DataGrids.Wpf.Converters"
                            mc:Ignorable="d"
                            WindowStartupLocation="CenterScreen"
                            Title="DataGrid test" Height="450" Width="800">
-    <Grid>
-        <TextBlock Text="Hello World!"/>
-    </Grid>
+
+    <Window.Resources>
+        <converters:SlideStateToColorConverter x:Key="SlideStateToColorConverter"
+                                               WaitingForPreviewColor="#FFC1EFFF"
+                                               PreviewColor="#FFFFE9AE"
+                                               WaitingForScanColor="#FFFFDBA4"
+                                               ScanColor="#FFFFB3B3"
+                                               DefaultColor="Transparent"/>
+    </Window.Resources>
+
+    <DataGrid x:Name="TasksDataGrid"
+              AutoGenerateColumns="False"
+              CanUserAddRows="False"
+              CanUserReorderColumns="False"
+              HeadersVisibility="Column"
+              SelectionMode="Single"
+              SelectionUnit="FullRow">
+        <DataGrid.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.ContainerStyle>
+                    <Style TargetType="{x:Type GroupItem}">
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type GroupItem}">
+                                    <Expander IsExpanded="True"
+                                              Padding="8 4">
+                                        <Expander.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Name}" Width="{Binding ElementName=Col1, Path=ActualWidth}"/>
+                                                <TextBlock Text="{Binding ItemCount, StringFormat={}{0} стекол}"/>
+                                            </StackPanel>
+                                        </Expander.Header>
+                                        <Expander.Content>
+                                            <ItemsPresenter/>
+                                        </Expander.Content>
+                                    </Expander>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </GroupStyle.ContainerStyle>
+            </GroupStyle>
+        </DataGrid.GroupStyle>
+        <DataGrid.RowStyle>
+            <Style TargetType="{x:Type DataGridRow}">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="{Binding State, Mode=OneWay, Converter={StaticResource SlideStateToColorConverter}}"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </DataGrid.RowStyle>
+        <DataGrid.Columns>
+            <DataGridTextColumn x:Name="Col1" Header="Номер магазина" Binding="{Binding Title}" IsReadOnly="True"/>
+            <DataGridTextColumn Header="Профиль" Binding="{Binding Profile}" IsReadOnly="True"/>
+            <DataGridTextColumn Header="Папка" Binding="{Binding Directory}" IsReadOnly="True"/>
+            <DataGridTextColumn Header="Статус" Binding="{Binding State}" IsReadOnly="True"/>
+        </DataGrid.Columns>
+    </DataGrid>
 </reactiveui:ReactiveWindow>
