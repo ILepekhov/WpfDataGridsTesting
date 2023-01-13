@@ -1,0 +1,31 @@
+<reactiveui:ReactiveWindow xmlns="https://github.com/avaloniaui"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+                           x:Class="DataGrids.Avalonia.MainWindow"
+                           x:TypeArguments="viewmodels:RootViewModel"
+                           xmlns:reactiveui="http://reactiveui.net"
+                           xmlns:viewmodels="clr-namespace:DataGrids.Shared.ViewModel;assembly=DataGrids.Shared"
+                           Icon="/Assets/avalonia-logo.ico"
+                           Title="DataGrids.Avalonia">
+
+    <DataGrid x:Name="TasksDataGrid"
+              AutoGenerateColumns="False"
+              CanUserReorderColumns="False"
+              HeadersVisibility="Column"
+              SelectionMode="Single"
+              IsReadOnly="True">
+        <DataGrid.Styles>
+            <Style Selector="DataGridRowGroupHeader">
+                <Setter Property="IsItemCountVisible" Value="True"/>
+            </Style>
+        </DataGrid.Styles>
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Номер магазина" Binding="{Binding Title}"/>
+            <DataGridTextColumn Header="Профиль" Binding="{Binding Profile}"/>
+            <DataGridTextColumn Header="Папка" Binding="{Binding Directory}"/>
+            <DataGridTextColumn Header="Статус" Binding="{Binding State}"/>
+        </DataGrid.Columns>
+    </DataGrid>
+</reactiveui:ReactiveWindow>

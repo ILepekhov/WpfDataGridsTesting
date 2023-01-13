@@ -5,7 +5,6 @@
                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                            xmlns:viewmodels="clr-namespace:DataGrids.Shared.ViewModel;assembly=DataGrids.Shared"
-                           xmlns:models="clr-namespace:DataGrids.Shared.Model;assembly=DataGrids.Shared"
                            xmlns:reactiveui="http://reactiveui.net"
                            xmlns:converters="clr-namespace:DataGrids.Wpf.Converters"
                            mc:Ignorable="d"

@@ -44,7 +44,8 @@ public static class ServicesRegistration
 
             ViewContractAttribute? customAttribute = viewTypeInfo.GetCustomAttribute<ViewContractAttribute>();
 
-            container.Register(serviceType, viewType, reuse: reuseMode, serviceKey: customAttribute?.Contract);
+            container.Register(serviceType, viewType, reuse: reuseMode, serviceKey: customAttribute?.Contract,
+                made: Made.Of(FactoryMethod.ConstructorWithResolvableArguments));
         }
     }
 
